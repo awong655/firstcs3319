@@ -1,0 +1,26 @@
+USE awong655assign2db;
+
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON awong655assign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW TABLES;
+
+SELECT * FROM Agent;
+SELECT * FROM Customer;
+SELECT * FROM Product;
+SELECT * FROM Purchases;
+
+CREATE VIEW CustInfo AS SELECT Customer.firstName, Customer.lastName, Product.description, Purchases.purchasedQuantity, Product.cost, Product.cost*Purchases.purchasedQuantity AS "Total Cost" FROM Customer INNER JOIN Purchases ON Customer.customerId = Purchases.customerId INNER JOIN Product ON Purchases.prodId = Product.prodId;
+
+SELECT * FROM CustInfo;
+SELECT * FROM CustInfo WHERE purchasedQuantity*cost > 100;
+DElETE FROM Product WHERE prodId = '67';
+SELECT prodId FROM Product WHERE prodId = '67';
+
+DELETE FROM Agent WHERE city = 'Springfield';
+-- This delete did not work because when creating the table, we enforced the foreign key constraint, meaning if it has reference to another record, it cannot be deleted.
+SELECT * FROM Agent WHERE city = 'Springfield';
+

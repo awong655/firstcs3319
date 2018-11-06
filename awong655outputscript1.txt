@@ -1,0 +1,69 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+SHOW DATABASES
+--------------
+
+Database
+information_schema
+awong655assign2db
+mycompany
+mysql
+performance_schema
+testDb
+--------------
+DROP DATABASE IF EXISTS awong655assign2db
+--------------
+
+--------------
+CREATE DATABASE awong655assign2db
+--------------
+
+--------------
+GRANT USAGE ON *.* TO 'ta'@'localhost'
+--------------
+
+--------------
+DROP USER 'ta'@'localhost'
+--------------
+
+--------------
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319'
+--------------
+
+--------------
+GRANT ALL PRIVILEGES ON awong655assign2db.* TO 'ta'@'localhost'
+--------------
+
+--------------
+FLUSH PRIVILEGES
+--------------
+
+--------------
+SHOW TABLES
+--------------
+
+--------------
+CREATE TABLE Agent(agentId varchar(2) NOT NULL, firstName varchar(30), lastName varchar(30), city varchar(15), commissionPercent int, PRIMARY KEY (agentId))
+--------------
+
+--------------
+CREATE TABLE Customer(customerId varchar(2) NOT NULL, agentId varchar(2), firstName varchar(30), lastName varchar(30), city varchar(15), phoneNumber varchar(12), PRIMARY KEY(customerId), CONSTRAINT FOREIGN KEY (agentId) REFERENCES Agent(agentId))
+--------------
+
+--------------
+CREATE TABLE Product(prodId varchar(2) NOT NULL, description varchar(20), cost DOUBLE, quantity int, PRIMARY KEY(prodId))
+--------------
+
+--------------
+CREATE TABLE Purchases (customerId varchar(2), prodId varchar(2), FOREIGN KEY(prodId) REFERENCES Product(prodId), FOREIGN KEY(customerId) REFERENCES Customer(customerId), purchasedQuantity INT,PRIMARY KEY(prodId, customerId))
+--------------
+
+--------------
+SHOW TABLES
+--------------
+
+Tables_in_awong655assign2db
+Agent
+Customer
+Product
+Purchases

@@ -1,0 +1,38 @@
+USE awong655assign2db;
+
+GRANT USAGE ON *.* TO 'ta'@'localhost';
+DROP USER 'ta'@'localhost';
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
+GRANT ALL PRIVILEGES ON awong655assign2db.* TO 'ta'@'localhost';
+FLUSH PRIVILEGES;
+
+--  Query 1
+SELECT description FROM Product;
+--  Query 2
+SELECT DISTINCT city FROM Customer;
+--  Query 3
+SELECT * FROM Agent ORDER BY City;
+--  Query 4
+SELECT firstName, lastName FROM Customer WHERE city = 'Springfield';
+--  Query 5
+SELECT firstName, lastName FROM Customer WHERE agentId = '11';
+--  Query 6
+SELECT description FROM Product WHERE description LIKE '%pad%' OR description LIKE '%Pad%';
+--  Query 7
+SELECT lastName, firstName, purchasedQuantity, description FROM Customer INNER JOIN Purchases ON Customer.customerId = Purchases.customerId INNER JOIN Product ON Product.prodId = Purchases.prodId;
+--  Query 8
+SELECT SUM(purchasedQuantity) AS "Homer's Total Purchases" FROM Purchases INNER JOIN Customer ON Purchases.customerId = Customer.customerId WHERE firstName = 'Homer' AND lastName = 'Simpson';
+--  Query 9
+SELECT firstName, lastName, SUM(purchasedQuantity) FROM Customer INNER JOIN Purchases ON Customer.customerId = Purchases.customerId GROUP BY (firstName);
+--  Query 10
+SELECT description, quantity FROM Product WHERE Product.prodId NOT IN (SELECT prodId FROM Purchases);
+--  Query 11
+SELECT description, quantity FROM Product WHERE prodId NOT IN (SELECT prodId FROM Purchases INNER JOIN Customer ON Purchases.customerId = Customer.customerId WHERE firstName = 'Fred' AND lastName = 'Flintstone');
+--  Query 12
+SELECT Agent.firstName, Agent.lastName, Customer.firstName, Customer.lastName FROM Customer INNER JOIN Agent ON Customer.agentId = Agent.agentId WHERE Agent.city = Customer.city;
+--  Query 13
+SELECT SUM(purchasedQuantity) AS "Number of Knee Pads Purchased" FROM Purchases INNER JOIN Product ON Purchases.prodId = Product.prodId WHERE Product.prodId = '78';
+--  Query 14
+SELECT description FROM Product WHERE description IN (SELECT description FROM Product INNER JOIN Purchases ON Product.prodId = Purchases.prodId INNER JOIN Customer ON Customer.customerId = Purchases.customerId GROUP BY description HAVING COUNT(description) > 3);
+--  Query 15
+SELECT Agent.firstName, Agent.lastName FROM Agent INNER JOIN Customer ON Agent.agentId = Customer.agentId INNER JOIN Purchases ON Purchases.customerId = Customer.customerId WHERE Purchases.prodId = '78';

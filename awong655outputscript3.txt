@@ -1,0 +1,153 @@
+Warning: Using a password on the command line interface can be insecure.
+--------------
+GRANT USAGE ON *.* TO 'ta'@'localhost'
+--------------
+
+--------------
+DROP USER 'ta'@'localhost'
+--------------
+
+--------------
+CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319'
+--------------
+
+--------------
+GRANT ALL PRIVILEGES ON awong655assign2db.* TO 'ta'@'localhost'
+--------------
+
+--------------
+FLUSH PRIVILEGES
+--------------
+
+--------------
+SELECT description FROM Product
+--------------
+
+description
+Bike
+Socks
+Elbow pads
+Shin pads
+Knee Pads
+Roller Blades
+Helmet
+--------------
+SELECT DISTINCT city FROM Customer
+--------------
+
+city
+Boston
+Springfield
+Krypto
+Providence
+--------------
+SELECT * FROM Agent ORDER BY City
+--------------
+
+agentId	firstName	lastName	city	commissionPercent
+33	David	Letterman	Bedrock	100
+11	Regis	Philbin	Boston	33
+22	Courtney	Cox	New York	25
+12	Rosie	Cox	Ottawa	50
+66	Rosie	ODonnell	Ottawa	100
+99	Hugh	Grant	Springfield	16
+98	Anthony	Wong	Toronto	100
+--------------
+SELECT firstName, lastName FROM Customer WHERE city = 'Springfield'
+--------------
+
+firstName	lastName
+Monty	Burns
+Homer	Simpson
+Sideshow	Bob
+--------------
+SELECT firstName, lastName FROM Customer WHERE agentId = '11'
+--------------
+
+firstName	lastName
+Barney	Rubble
+Fred	Flintstone
+--------------
+SELECT description FROM Product WHERE description LIKE '%pad%' OR description LIKE '%Pad%'
+--------------
+
+description
+Elbow pads
+Shin pads
+Knee Pads
+--------------
+SELECT lastName, firstName, purchasedQuantity, description FROM Customer INNER JOIN Purchases ON Customer.customerId = Purchases.customerId INNER JOIN Product ON Product.prodId = Purchases.prodId
+--------------
+
+lastName	firstName	purchasedQuantity	description
+Griffens	Peter	19	Elbow pads
+Flintstone	Fred	2	Elbow pads
+Flintstone	Fred	2	Knee Pads
+Simpson	Homer	14	Socks
+Simpson	Homer	10	Elbow pads
+Simpson	Homer	20	Helmet
+Bob	Sideshow	5	Socks
+Bob	Sideshow	5	Elbow pads
+Bob	Sideshow	5	Knee Pads
+Bob	Sideshow	5	Helmet
+--------------
+SELECT SUM(purchasedQuantity) AS "Homer's Total Purchases" FROM Purchases INNER JOIN Customer ON Purchases.customerId = Customer.customerId WHERE firstName = 'Homer' AND lastName = 'Simpson'
+--------------
+
+Homer's Total Purchases
+44
+--------------
+SELECT firstName, lastName, SUM(purchasedQuantity) FROM Customer INNER JOIN Purchases ON Customer.customerId = Purchases.customerId GROUP BY (firstName)
+--------------
+
+firstName	lastName	SUM(purchasedQuantity)
+Fred	Flintstone	4
+Homer	Simpson	44
+Peter	Griffens	19
+Sideshow	Bob	20
+--------------
+SELECT description, quantity FROM Product WHERE Product.prodId NOT IN (SELECT prodId FROM Purchases)
+--------------
+
+description	quantity
+Bike	200
+Shin pads	98
+Roller Blades	89
+--------------
+SELECT description, quantity FROM Product WHERE prodId NOT IN (SELECT prodId FROM Purchases INNER JOIN Customer ON Purchases.customerId = Customer.customerId WHERE firstName = 'Fred' AND lastName = 'Flintstone')
+--------------
+
+description	quantity
+Bike	200
+Socks	100
+Shin pads	98
+Roller Blades	89
+Helmet	30
+--------------
+SELECT Agent.firstName, Agent.lastName, Customer.firstName, Customer.lastName FROM Customer INNER JOIN Agent ON Customer.agentId = Agent.agentId WHERE Agent.city = Customer.city
+--------------
+
+firstName	lastName	firstName	lastName
+Regis	Philbin	Barney	Rubble
+Hugh	Grant	Monty	Burns
+Regis	Philbin	Fred	Flintstone
+Hugh	Grant	Homer	Simpson
+--------------
+SELECT SUM(purchasedQuantity) AS "Number of Knee Pads Purchased" FROM Purchases INNER JOIN Product ON Purchases.prodId = Product.prodId WHERE Product.prodId = '78'
+--------------
+
+Number of Knee Pads Purchased
+7
+--------------
+SELECT description FROM Product WHERE description IN (SELECT description FROM Product INNER JOIN Purchases ON Product.prodId = Purchases.prodId INNER JOIN Customer ON Customer.customerId = Purchases.customerId GROUP BY description HAVING COUNT(description) > 3)
+--------------
+
+description
+Elbow pads
+--------------
+SELECT Agent.firstName, Agent.lastName FROM Agent INNER JOIN Customer ON Agent.agentId = Customer.agentId INNER JOIN Purchases ON Purchases.customerId = Customer.customerId WHERE Purchases.prodId = '78'
+--------------
+
+firstName	lastName
+Regis	Philbin
+Rosie	Cox
