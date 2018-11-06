@@ -1,5 +1,5 @@
 Warning: Using a password on the command line interface can be insecure.
-ERROR 1451 (23000) at line 23: Cannot delete or update a parent row: a foreign key constraint fails (`awong655assign2db`.`Customer`, CONSTRAINT `Customer_ibfk_1` FOREIGN KEY (`agentId`) REFERENCES `Agent` (`agentId`))
+ERROR 1451 (23000) at line 31: Cannot delete or update a parent row: a foreign key constraint fails (`awong655assign2db`.`Customer`, CONSTRAINT `Customer_ibfk_1` FOREIGN KEY (`agentId`) REFERENCES `Agent` (`agentId`))
 --------------
 GRANT USAGE ON *.* TO 'ta'@'localhost'
 --------------
@@ -116,6 +116,17 @@ DElETE FROM Product WHERE prodId = '67'
 SELECT prodId FROM Product WHERE prodId = '67'
 --------------
 
+--------------
+SELECT * FROM Product
+--------------
+
+prodId	description	cost	quantity
+11	Bike	150	200
+12	Socks	2	100
+66	Elbow pads	14.25	120
+78	Knee Pads	12.15	70
+88	Roller Blades	75	89
+99	Helmet	29	30
 --------------
 DELETE FROM Agent WHERE city = 'Springfield'
 --------------

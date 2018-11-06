@@ -138,6 +138,18 @@ INSERT INTO Purchases (prodId, customerId, purchasedQuantity) VALUES(66,14,19)
 --------------
 
 --------------
+SELECT * FROM Customer
+--------------
+
+customerId	agentId	firstName	lastName	city	phoneNumber
+10	NULL	Barney	Rubble	Bedrock	777-1234
+12	NULL	Monty	Burns	Springfield	789-0000
+13	NULL	Super	Man	Krypto	888-1234
+14	NULL	Peter	Griffens	Providence	987-4567
+15	NULL	Fred	Flintstone	Bedrock	777-2345
+21	NULL	Homer	Simpson	Springfield	686-8956
+31	NULL	Sideshow	Bob	Springfield	686-5555
+--------------
 UPDATE Customer SET agentId='99' WHERE (customerId='21' OR customerId='12' OR customerId='14')
 --------------
 
