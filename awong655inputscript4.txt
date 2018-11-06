@@ -1,3 +1,5 @@
+-- Part 4 Script
+
 USE awong655assign2db;
 
 GRANT USAGE ON *.* TO 'ta'@'localhost';
@@ -13,14 +15,19 @@ SELECT * FROM Customer;
 SELECT * FROM Product;
 SELECT * FROM Purchases;
 
+-- Creating the view
 CREATE VIEW CustInfo AS SELECT Customer.firstName, Customer.lastName, Product.description, Purchases.purchasedQuantity, Product.cost, Product.cost*Purchases.purchasedQuantity AS "Total Cost" FROM Customer INNER JOIN Purchases ON Customer.customerId = Purchases.customerId INNER JOIN Product ON Purchases.prodId = Product.prodId;
 
+-- Query the view
 SELECT * FROM CustInfo;
 SELECT * FROM CustInfo WHERE purchasedQuantity*cost > 100;
+
+-- Delete product
 DElETE FROM Product WHERE prodId = '67';
 SELECT prodId FROM Product WHERE prodId = '67';
+SELECT * FROM Product;
 
+-- Attempt to delete agent
 DELETE FROM Agent WHERE city = 'Springfield';
 -- This delete did not work because when creating the table, we enforced the foreign key constraint, meaning if it has reference to another record, it cannot be deleted.
 SELECT * FROM Agent WHERE city = 'Springfield';
-

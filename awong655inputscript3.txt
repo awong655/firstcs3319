@@ -1,3 +1,5 @@
+-- Part 3 Script
+
 USE awong655assign2db;
 
 GRANT USAGE ON *.* TO 'ta'@'localhost';

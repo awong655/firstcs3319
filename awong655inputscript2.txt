@@ -1,3 +1,5 @@
+-- Part 2 script
+
 USE awong655assign2db;
 
 GRANT USAGE ON *.* TO 'ta'@'localhost';
@@ -6,21 +8,26 @@ CREATE USER 'ta'@'localhost' IDENTIFIED BY 'cs3319';
 GRANT ALL PRIVILEGES ON awong655assign2db.* TO 'ta'@'localhost';
 FLUSH PRIVILEGES;
 
+-- Load data from CSV
 LOAD DATA LOCAL INFILE 'loaddatafall2018.txt' INTO TABLE Product FIELDS TERMINATED BY ',' (prodId, description, cost, quantity);
 
+-- Insert additional records into Product
 SELECT * FROM Product;
-
 INSERT INTO Product (prodId, description, cost, quantity) VALUES ('66', 'Elbow pads', 14.25, 120);
 INSERT INTO Product (prodId, description, cost, quantity) VALUES ('67', 'Shin pads', 20.25, 98);
 
+-- Insert records into Agent table
 INSERT INTO Agent (agentId, firstName, lastName, city, commissionPercent) VALUES ('99','Hugh','Grant','Springfield',16);
 INSERT INTO Agent (agentId, firstName, lastName, city, commissionPercent) VALUES ('22','Courtney','Cox','New York',25);
 INSERT INTO Agent (agentId, firstName, lastName, city, commissionPercent) VALUES ('66','Rosie','ODonnell','Ottawa',100);
 INSERT INTO Agent (agentId, firstName, lastName, city, commissionPercent) VALUES ('33','David','Letterman','Bedrock',100);
 INSERT INTO Agent (agentId, firstName, lastName, city, commissionPercent) VALUES ('11','Regis','Philbin','Boston',33);
 INSERT INTO Agent (agentId, firstName, lastName, city, commissionPercent) VALUES ('12','Rosie','Cox','Ottawa',50);
+
+-- My additional record
 INSERT INTO Agent (agentId, firstName, lastName, city, commissionPercent) VALUES ('98','Anthony','Wong','Toronto',100);
 
+-- Insert Customer record
 INSERT INTO Customer (customerId, firstName, lastName, city, phoneNumber) VALUES (21,'Homer','Simpson','Springfield','686-8956');
 INSERT INTO Customer (customerId, firstName, lastName, city, phoneNumber) VALUES (31,'Sideshow','Bob','Springfield','686-5555');
 INSERT INTO Customer (customerId, firstName, lastName, city, phoneNumber) VALUES (12,'Monty','Burns','Springfield','789-0000');
@@ -29,6 +36,7 @@ INSERT INTO Customer (customerId, firstName, lastName, city, phoneNumber) VALUES
 INSERT INTO Customer (customerId, firstName, lastName, city, phoneNumber) VALUES (10,'Barney','Rubble','Bedrock','777-1234');
 INSERT INTO Customer (customerId, firstName, lastName, city, phoneNumber) VALUES (14,'Peter','Griffens','Providence','987-4567');
 
+-- Insert Purchases records (Many to Many table)
 INSERT INTO Purchases (prodId, customerId, purchasedQuantity) VALUES(99,21,20);
 INSERT INTO Purchases (prodId, customerId, purchasedQuantity) VALUES(12,21,14);
 INSERT INTO Purchases (prodId, customerId, purchasedQuantity) VALUES(66,21,10);
@@ -40,6 +48,8 @@ INSERT INTO Purchases (prodId, customerId, purchasedQuantity) VALUES(66,15,2);
 INSERT INTO Purchases (prodId, customerId, purchasedQuantity) VALUES(78,15,2);
 INSERT INTO Purchases (prodId, customerId, purchasedQuantity) VALUES(66,14,19);
 
+-- Update Customer Table
+SELECT * FROM Customer;
 UPDATE Customer SET agentId='99' WHERE (customerId='21' OR customerId='12' OR customerId='14');
 UPDATE Customer SET agentId='33' WHERE (customerId='13');
 UPDATE Customer SET agentId='11' WHERE (customerId='10' OR customerId='15');
@@ -50,13 +60,16 @@ SELECT * FROM Customer;
 SELECT * FROM Product;
 SELECT * FROM Purchases;
 
+-- Update Customer Table
 UPDATE Customer SET firstName = 'Wonder', lastName = 'Woman' WHERE firstName = 'Super' AND lastName = 'Man';
+
+-- Update Purchases table
 UPDATE Purchases RIGHT JOIN Customer ON Customer.customerId = Purchases.customerId SET purchasedQuantity = 5 WHERE firstName = 'Sideshow' AND lastName = 'Bob';
 
+-- Update Purchases table
 UPDATE Customer INNER JOIN (SELECT agentId FROM Agent WHERE firstName = 'Regis' AND lastName = 'Philbin') AS T ON Customer.agentId = T.agentId SET city='Boston';
 
 SELECT * FROM Agent;
 SELECT * FROM Customer;
 SELECT * FROM Product;
 SELECT * FROM Purchases;
-
